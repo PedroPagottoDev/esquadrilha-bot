@@ -550,8 +550,11 @@ module.exports = {
     const everyone = guild.roles.everyone;
     const roleMap = {};
 
-    // 1. Criar cargos
-    for (const roleData of ROLES) {
+    // 1. Criar cargos do mais alto para o mais baixo
+    // O Discord coloca cada novo cargo logo abaixo do bot, então
+    // criando na ordem inversa o resultado final fica correto.
+    const rolesOrdemCriacao = [...ROLES].reverse();
+    for (const roleData of rolesOrdemCriacao) {
       const existing = guild.roles.cache.find(r => r.name === roleData.name);
       if (existing) {
         roleMap[roleData.name] = existing.id;
@@ -573,12 +576,6 @@ module.exports = {
 
     const adminRoleId = roleMap['🎖️ Comandante da Base Aérea'];
     const modRoleId   = roleMap['🔨 Moderador Militar'];
-
-    // Ordenar cargos conforme a hierarquia (index 0 = mais baixo)
-    const positionUpdates = ROLES
-      .map((r, i) => ({ role: roleMap[r.name], position: i + 1 }))
-      .filter(p => p.role);
-    await guild.roles.setPositions(positionUpdates).catch(() => {});
 
     // 2. Criar categorias e canais
     for (let i = 0; i < CATEGORIES.length; i++) {
