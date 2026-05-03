@@ -5,8 +5,8 @@ module.exports = {
   async execute(member) {
     const guild = member.guild;
 
-    // Tenta dar o cargo de Recruta automaticamente
-    const recrutaRole = guild.roles.cache.find(r => r.name === '🪂 Recruta');
+    // Dá o cargo de Aluno de Aviação Militar automaticamente
+    const recrutaRole = guild.roles.cache.find(r => r.name === '🛫 Aluno de Aviação Militar');
     if (recrutaRole) {
       await member.roles.add(recrutaRole).catch(() => {});
     }
@@ -31,7 +31,7 @@ module.exports = {
         `**1.** Leia as 📜 regras\n` +
         `**2.** Vá em 📝 inscrições e solicite seu curso\n` +
         `**3.** Aguarde um oficial te chamar para o treinamento\n\n` +
-        `*Bom voo, Recruta! A glória está nos céus.* 🫡`
+        `*Bom voo, Aluno! A glória está nos céus.* 🫡`
       )
       .setThumbnail(member.user.displayAvatarURL({ dynamic: true }))
       .setColor(0x2980B9)

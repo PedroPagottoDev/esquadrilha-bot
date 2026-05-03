@@ -12,14 +12,31 @@ const {
 // ─── Definição completa do servidor ───────────────────────────────────────────
 
 const ROLES = [
-  { name: '👤 Visitante',    color: '#7F8C8D', hoist: false, mentionable: false, permissions: [] },
-  { name: '🪂 Recruta',      color: '#95A5A6', hoist: true,  mentionable: false, permissions: [] },
-  { name: '🛩️ Cadete',       color: '#F39C12', hoist: true,  mentionable: true,  permissions: [] },
-  { name: '🔰 Sargento',     color: '#8E44AD', hoist: true,  mentionable: true,  permissions: [] },
-  { name: '⭐ Tenente',      color: '#27AE60', hoist: true,  mentionable: true,  permissions: [] },
-  { name: '🪖 Capitão',      color: '#2980B9', hoist: true,  mentionable: true,  permissions: ['ManageMessages', 'KickMembers', 'MuteMembers'] },
-  { name: '🎖️ Major',        color: '#C0392B', hoist: true,  mentionable: true,  permissions: ['ManageGuild', 'ManageChannels', 'ManageRoles', 'KickMembers', 'BanMembers'] },
-  { name: '✈️ Comandante',   color: '#FFD700', hoist: true,  mentionable: true,  permissions: ['Administrator'] },
+  // Comunidade
+  { name: '🟢 Piloto Ativo',                color: '#2ECC71', hoist: false, mentionable: false, permissions: [] },
+  { name: '💎 Membro Honrado',              color: '#1ABC9C', hoist: false, mentionable: false, permissions: [] },
+  { name: '🎖️ Veterano da Base',            color: '#95A5A6', hoist: false, mentionable: false, permissions: [] },
+  { name: '🛰️ Parceiro Militar',            color: '#7F8C8D', hoist: false, mentionable: false, permissions: [] },
+  // Controle Aéreo
+  { name: '📡 Operador de Radar',           color: '#3498DB', hoist: true,  mentionable: true,  permissions: [] },
+  { name: '🎧 Controlador Aéreo',           color: '#2980B9', hoist: true,  mentionable: true,  permissions: [] },
+  // Academia de Pilotos
+  { name: '🛫 Aluno de Aviação Militar',    color: '#95A5A6', hoist: true,  mentionable: true,  permissions: [] },
+  { name: '✈️ Cadete em Treinamento',       color: '#27AE60', hoist: true,  mentionable: true,  permissions: [] },
+  { name: '🎤 Instrutor de Voo',            color: '#F39C12', hoist: true,  mentionable: true,  permissions: [] },
+  // Esquadrão Operacional
+  { name: '🔥 Piloto de Caça',              color: '#E74C3C', hoist: true,  mentionable: true,  permissions: [] },
+  { name: '⚡ Piloto de Elite',             color: '#F1C40F', hoist: true,  mentionable: true,  permissions: [] },
+  { name: '☠️ Ás da Academia',              color: '#ECF0F1', hoist: true,  mentionable: true,  permissions: [] },
+  // Staff da Base
+  { name: '🎥 Oficial de Mídia Militar',   color: '#E91E63', hoist: true,  mentionable: true,  permissions: ['ManageMessages'] },
+  { name: '🧰 Engenheiro da Base',          color: '#9B59B6', hoist: true,  mentionable: true,  permissions: ['ManageChannels', 'ManageMessages'] },
+  { name: '📡 Supervisor de Operações',     color: '#1ABC9C', hoist: true,  mentionable: true,  permissions: ['ManageMessages'] },
+  { name: '🔨 Moderador Militar',           color: '#2980B9', hoist: true,  mentionable: true,  permissions: ['ManageMessages', 'KickMembers', 'MuteMembers'] },
+  // Comando da Academia
+  { name: '🧠 Oficial de Estratégia Aérea', color: '#C0392B', hoist: true, mentionable: true,  permissions: ['ManageMessages', 'ManageChannels'] },
+  { name: '🎖️ Comandante da Base Aérea',   color: '#FF6B00', hoist: true,  mentionable: true,  permissions: ['ManageGuild', 'ManageChannels', 'ManageRoles', 'KickMembers', 'BanMembers'] },
+  { name: '👑 Diretor Supremo da Academia', color: '#FFD700', hoist: true,  mentionable: true,  permissions: ['Administrator'] },
 ];
 
 const PERMISSION_MAP = {
@@ -132,16 +149,25 @@ async function postarSobre(channel) {
       .setTimestamp(),
 
     new EmbedBuilder()
-      .setTitle('🏅 Hierarquia Militar')
+      .setTitle('🏅 Hierarquia da Academia')
       .setDescription(
-        '✈️ **Comandante** — Liderança máxima da Esquadrilha\n' +
-        '🎖️ **Major** — Alto comando e gestão operacional\n' +
-        '🪖 **Capitão** — Líderes de esquadrão e moderação\n' +
-        '⭐ **Tenente** — Pilotos experientes e instrutores\n' +
-        '🔰 **Sargento** — Pilotos formados e aptos para shows\n' +
-        '🛩️ **Cadete** — Pilotos em formação\n' +
-        '🪂 **Recruta** — Novo membro, aguardando curso\n' +
-        '👤 **Visitante** — Observador sem patente'
+        '**👑 COMANDO DA ACADEMIA**\n' +
+        '👑 **Diretor Supremo da Academia** — Dono e autoridade máxima\n' +
+        '🎖️ **Comandante da Base Aérea** — Gerencia toda a academia\n' +
+        '🧠 **Oficial de Estratégia Aérea** — Eventos, missões e organização\n\n' +
+        '**🛡️ STAFF DA BASE**\n' +
+        '🔨 **Moderador Militar** — Ordem e regras\n' +
+        '📡 **Supervisor de Operações** — Treinos e atividades\n' +
+        '🧰 **Engenheiro da Base** — Bots e estrutura\n' +
+        '🎥 **Oficial de Mídia Militar** — Anúncios e divulgação\n\n' +
+        '**🎓 ACADEMIA DE PILOTOS**\n' +
+        '🎤 **Instrutor de Voo** — Ensina manobras e combate\n' +
+        '✈️ **Cadete em Treinamento** — Aprendendo a pilotar\n' +
+        '🛫 **Aluno de Aviação Militar** — Novato recém-chegado\n\n' +
+        '**⚔️ ESQUADRÃO OPERACIONAL**\n' +
+        '☠️ **Ás da Academia** — Melhor piloto, cargo raro\n' +
+        '⚡ **Piloto de Elite** — Experiente e destaque em combate\n' +
+        '🔥 **Piloto de Caça** — Piloto oficial aprovado'
       )
       .setColor(0xFFD700),
 
@@ -217,15 +243,18 @@ async function postarRegras(channel) {
       .setColor(0x2980B9),
 
     new EmbedBuilder()
-      .setTitle('§5 — Promoções e Patentes')
+      .setTitle('§5 — Progressão de Patentes')
       .setDescription(
-        '🪂 **Recruta** → Ingressante — sem requisitos\n' +
-        '🛩️ **Cadete** → Concluir o Curso Básico de Voo\n' +
-        '🔰 **Sargento** → 15 treinos + aprovação do Capitão\n' +
-        '⭐ **Tenente** → 3 shows + 30 treinos + recomendação\n' +
-        '🪖 **Capitão** → Contribuição comprovada + indicação do Major\n' +
-        '🎖️ **Major** → Indicação direta do Comandante\n' +
-        '✈️ **Comandante** → Fundador e líder supremo'
+        '🛫 **Aluno de Aviação Militar** → Ingressante — sem requisitos\n' +
+        '✈️ **Cadete em Treinamento** → Concluir o Curso Básico de Voo\n' +
+        '🎤 **Instrutor de Voo** → Aprovação do Comandante da Base\n' +
+        '🔥 **Piloto de Caça** → Piloto oficial aprovado em missão\n' +
+        '⚡ **Piloto de Elite** → Destaque em combate e atividade\n' +
+        '☠️ **Ás da Academia** → Cargo raro — indicação do Diretor Supremo\n' +
+        '🎧 **Controlador Aéreo** → Membro da equipe ATC\n' +
+        '🔨 **Moderador Militar** → Indicação do Comandante da Base\n' +
+        '🎖️ **Comandante da Base Aérea** → Indicação do Diretor Supremo\n' +
+        '👑 **Diretor Supremo da Academia** → Dono da companhia'
       )
       .setColor(0xFFD700),
 
@@ -517,8 +546,8 @@ module.exports = {
       roleMap[roleData.name] = role.id;
     }
 
-    const adminRoleId = roleMap['🎖️ Major'];
-    const modRoleId   = roleMap['🪖 Capitão'];
+    const adminRoleId = roleMap['🎖️ Comandante da Base Aérea'];
+    const modRoleId   = roleMap['🔨 Moderador Militar'];
 
     // 2. Criar categorias e canais
     for (let i = 0; i < CATEGORIES.length; i++) {
