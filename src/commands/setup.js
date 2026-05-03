@@ -447,6 +447,18 @@ async function postarGuiaShows(channel) {
   for (const embed of embeds) await channel.send({ embeds: [embed] });
 }
 
+// ─── Permissão ────────────────────────────────────────────────────────────────
+
+const COMANDO_ROLES = [
+  '👑 Diretor Supremo da Academia',
+  '🎖️ Comandante da Base Aérea',
+  '🧠 Oficial de Estratégia Aérea',
+];
+
+function temPermissao(member) {
+  return member.roles.cache.some(r => COMANDO_ROLES.includes(r.name));
+}
+
 // ─── Mapa canal → função de conteúdo ─────────────────────────────────────────
 
 const CONTEUDO_MAP = {
@@ -468,6 +480,18 @@ module.exports = {
   async execute(interaction) {
     if (!interaction.guild) {
       return interaction.reply({ content: 'Só pode ser usado em servidores.', ephemeral: true });
+    }
+
+    if (!temPermissao(interaction.member)) {
+      return interaction.reply({
+        embeds: [
+          new EmbedBuilder()
+            .setTitle('❌ Acesso Negado')
+            .setDescription('Apenas membros do **Comando da Academia** podem usar este comando.')
+            .setColor(0xED4245),
+        ],
+        ephemeral: true,
+      });
     }
 
     // Confirmação via botão
