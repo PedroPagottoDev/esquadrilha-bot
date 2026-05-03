@@ -456,7 +456,8 @@ const COMANDO_ROLES = [
 ];
 
 function temPermissao(member) {
-  return member.roles.cache.some(r => COMANDO_ROLES.includes(r.name));
+  const isDono = member.guild.ownerId === member.id;
+  return isDono || member.roles.cache.some(r => COMANDO_ROLES.includes(r.name));
 }
 
 // ─── Mapa canal → função de conteúdo ─────────────────────────────────────────
@@ -572,6 +573,12 @@ module.exports = {
 
     const adminRoleId = roleMap['🎖️ Comandante da Base Aérea'];
     const modRoleId   = roleMap['🔨 Moderador Militar'];
+
+    // Ordenar cargos conforme a hierarquia (index 0 = mais baixo)
+    const positionUpdates = ROLES
+      .map((r, i) => ({ role: roleMap[r.name], position: i + 1 }))
+      .filter(p => p.role);
+    await guild.roles.setPositions(positionUpdates).catch(() => {});
 
     // 2. Criar categorias e canais
     for (let i = 0; i < CATEGORIES.length; i++) {

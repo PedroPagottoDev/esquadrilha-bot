@@ -1,6 +1,6 @@
 require('dotenv').config();
 const { REST, Routes } = require('discord.js');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
 
 const commands = [];
@@ -17,9 +17,9 @@ const rest = new REST().setToken(process.env.DISCORD_TOKEN);
 
 (async () => {
   try {
-    console.log(`Registrando ${commands.length} comando(s)...`);
+    console.log(`Registrando ${commands.length} comando(s) no servidor...`);
     await rest.put(
-      Routes.applicationCommands(process.env.CLIENT_ID),
+      Routes.applicationGuildCommands(process.env.CLIENT_ID, process.env.GUILD_ID),
       { body: commands }
     );
     console.log('✅ Comandos registrados com sucesso!');

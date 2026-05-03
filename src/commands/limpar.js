@@ -14,7 +14,8 @@ const COMANDO_ROLES = [
 ];
 
 function temPermissao(member) {
-  return member.roles.cache.some(r => COMANDO_ROLES.includes(r.name));
+  const isDono = member.guild.ownerId === member.id;
+  return isDono || member.roles.cache.some(r => COMANDO_ROLES.includes(r.name));
 }
 
 module.exports = {
