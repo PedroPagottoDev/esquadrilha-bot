@@ -1,7 +1,8 @@
 require('dotenv').config();
 const { Client, GatewayIntentBits, Collection, Events } = require('discord.js');
-const fs = require('fs');
+const fs   = require('fs');
 const path = require('path');
+const { criarTicket, fecharTicket, reivindicarTicket } = require('./ticket/handler');
 
 const client = new Client({
   intents: [
@@ -33,26 +34,47 @@ for (const file of fs.readdirSync(eventsPath).filter(f => f.endsWith('.js'))) {
   }
 }
 
-// Responde slash commands
+// Roteador de interações
 client.on(Events.InteractionCreate, async interaction => {
-  if (!interaction.isChatInputCommand()) return;
-  const command = client.commands.get(interaction.commandName);
-  if (!command) return;
-  try {
-    await command.execute(interaction);
-  } catch (err) {
-    console.error(err);
-    const msg = { content: '❌ Ocorreu um erro ao executar este comando.', ephemeral: true };
-    if (interaction.replied || interaction.deferred) {
-      await interaction.followUp(msg);
-    } else {
-      await interaction.reply(msg);
+  // Slash commands
+  if (interaction.isChatInputCommand()) {
+    const command = client.commands.get(interaction.commandName);
+    if (!command) return;
+    try {
+      await command.execute(interaction);
+    } catch (err) {
+      console.error(err);
+      const msg = { content: '❌ Erro ao executar o comando.', ephemeral: true };
+      if (interaction.replied || interaction.deferred) {
+        await interaction.followUp(msg);
+      } else {
+        await interaction.reply(msg);
+      }
+    }
+    return;
+  }
+
+  // Select menu — abrir ticket
+  if (interaction.isStringSelectMenu() && interaction.customId === 'ticket_abrir') {
+    await criarTicket(interaction, interaction.values[0]);
+    return;
+  }
+
+  // Botões de ticket
+  if (interaction.isButton()) {
+    if (interaction.customId === 'ticket_fechar') {
+      await fecharTicket(interaction);
+      return;
+    }
+    if (interaction.customId === 'ticket_reivindicar') {
+      await reivindicarTicket(interaction);
+      return;
     }
   }
 });
 
 client.once(Events.ClientReady, () => {
-  console.log(`✅ Bot online como ${client.user.tag}`);
+  console.log(`✅ Online como ${client.user.tag}`);
 });
 
 client.login(process.env.DISCORD_TOKEN);
