@@ -647,7 +647,7 @@ module.exports = {
       await fn(ch);
     }
 
-    await interaction.editReply({
+    await collected.followUp({
       embeds: [
         new EmbedBuilder()
           .setTitle('✅ Servidor Configurado!')
@@ -662,6 +662,7 @@ module.exports = {
           .setTimestamp()
           .setFooter({ text: 'Esquadrilha Bot' }),
       ],
+      ephemeral: true,
     });
   },
 };

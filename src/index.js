@@ -43,13 +43,16 @@ client.on(Events.InteractionCreate, async interaction => {
     try {
       await command.execute(interaction);
     } catch (err) {
+      if (err?.code === 40060) return; // Interação já respondida — ignorar
       console.error(err);
       const msg = { content: '❌ Erro ao executar o comando.', ephemeral: true };
-      if (interaction.replied || interaction.deferred) {
-        await interaction.followUp(msg);
-      } else {
-        await interaction.reply(msg);
-      }
+      try {
+        if (interaction.replied || interaction.deferred) {
+          await interaction.followUp(msg);
+        } else {
+          await interaction.reply(msg);
+        }
+      } catch {}
     }
     return;
   }

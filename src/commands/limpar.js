@@ -74,7 +74,7 @@ module.exports = {
         time: 30_000,
       });
     } catch {
-      return interaction.editReply({ content: '⏱️ Tempo esgotado.', components: [], embeds: [] });
+      return interaction.editReply({ content: '⏱️ Tempo esgotado.', components: [], embeds: [] }).catch(() => {});
     }
 
     if (collected.customId === 'limpar_cancel') {
